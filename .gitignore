@@ -1,0 +1,3 @@
+# Include child .gitignore files
+!backend/.gitignore
+!web/.gitignore

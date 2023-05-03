@@ -1,0 +1,47 @@
+version: '3'
+
+services:
+  backend:
+    build: ./backend
+    environment:
+      - NODE_ENV=production
+    ports:
+      - "4000:4000"
+    env_file:
+      - .env
+
+  frontend:
+    build: ./web
+    environment:
+      - NODE_ENV=production
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+
+  postgresdb:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${AUTH_DB}
+    ports:
+      - "${POSTGRES_PORT}:${POSTGRES_PORT}"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    env_file:
+      - .env
+
+  adminer:
+    image: adminer:latest
+    ports:
+      - "${ADMINER_PORT}:${ADMINER_PORT}"
+
+  machine_adminer:
+    image: adminer:latest
+    ports:
+      - "${MACHINE_ADMINER_PORT}:${ADMINER_PORT}"
+    env_file:
+      - .env
+volumes:
+  postgres-data:
